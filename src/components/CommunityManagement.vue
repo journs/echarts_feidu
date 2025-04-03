@@ -88,6 +88,29 @@
           </div>
         </div>
       </div>
+      <div class="huan">
+        <div class="title">
+          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+          <div>超时访客数据</div>
+        </div>
+        <!-- 添加ECharts图表容器 -->
+        <div class="chart-container">
+          <div id="data_content">
+            <vue-echarts :option="pieChartOption" auto-resize class="column-chart"/>
+          </div>
+        </div>
+      </div>
+      <div class="right_2">
+        <div class="title">
+          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+          <div>报警数据</div>
+        </div>
+        <div class="chart-container">
+          <div id="data_content">
+            <vue-echarts :option="lineChartOption" auto-resize class="column-chart"/>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -96,7 +119,146 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import * as echarts from 'echarts';
+import yzImage from '@/assets/png/img/yz.png';
 
+const lineChartOption = ref({
+  grid: {
+    top: '20%', // 增加顶部间距，给标题留空间
+    bottom: '25%', // 调整底部间距，平衡布局
+    left: '15%', // 增大左侧间距，避免左侧文字被挡
+    right: '5%'
+  },
+  title: {
+    text: '近一月报警次数 单位：{whiteText|次数/天}',
+    left: 'center',
+    textStyle: {
+      color: '#3d79da',
+      fontSize: 12,
+      rich: {
+        whiteText: {color: '#fff'}
+      }
+    }
+  },
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: ['6-27', '6-28', '6-29', '6-30', '7-1', '7-2', '7-3', '7-4', '7-5'],
+    axisLine: {lineStyle: {color: '#4c5c7a'}},
+    axisTick: {show: false},
+    axisLabel: {color: '#9dceff'}
+  },
+  yAxis: {
+    type: 'value',
+    max: 70,
+    splitLine: {
+      lineStyle: {type: 'dashed', color: '#d5e0ec'}
+    },
+    axisLine: {lineStyle: {color: '#4c5c7a'}},
+
+    axisLabel: {
+      color: '#9dceff',
+      margin: 5, // 增加标签与轴线的间距，避免遮挡
+      fontSize: 6 // 缩小Y轴标签字体
+    }
+  },
+  series: [
+    {
+      name: '报警次数',
+      type: 'line',
+      data: [20, 30, 40, 65, 55, 50, 45, 35, 10],
+      lineStyle: {
+        color: 'rgba(114, 101, 230, 0.8)', // 折线颜色添加透明度（原#7265E6）
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(
+            0, 0, 0, 1,
+            [
+              {
+                offset: 0,
+                color: 'rgba(114, 101, 230, 0.5)' // 起始色透明度（原#7265E6）
+              },
+              {
+                offset: 1,
+                color: 'rgba(64, 133, 162, 0.5)' // 结束色透明度（原#4085a2）
+              }
+            ]
+        )
+      },
+      symbol: 'circle',
+      symbolSize: 8,
+      itemStyle: {color: '#FF6B81'}
+    }
+  ]
+});
+// 新建饼图配置变量
+const pieChartOption = ref({
+  graphic: [
+    // 添加中间图片
+    {
+      type: 'image',
+      left: 'center',
+      bottom: '30%', // 改为百分比更灵活，或直接写像素值如 40
+      style: {
+        image: yzImage,
+        width: 25,
+        height: 25
+      }
+    },
+    // 添加中间文字
+    {
+      type: 'text',
+      left: 'center',
+      top: 'center',
+      style: {
+        text: '业主关怀',
+        fontSize: 14,
+        fill: '#fff',
+        textAlign: 'center'
+      }
+    }
+  ],
+  legend: {
+    orient: 'vertical',
+    right: -5,
+    itemWidth: 20,
+    itemHeight: 15,
+    textStyle: {color: '#9dceff'}
+  },
+  tooltip: {
+    trigger: 'item',
+    formatter: (params) => {
+      switch (params.name) {
+        case '长期':
+          return `长期空置 ${params.value} 次`;
+        case '小孩':
+          return `小孩独自出门超时 ${params.value} 次`;
+        case '老人':
+          return `老人单独出门超时 ${params.value} 次`;
+        default:
+          return `${params.name} ${params.value}`;
+      }
+    }
+  },
+  series: [
+    {
+      type: 'pie',
+      radius: ['50%', '70%'],
+      center: ['50%', '50%'],
+      data: [
+        {value: 40, name: '长期', itemStyle: {color: '#4C81DD'}},
+        {value: 140, name: '长期', itemStyle: {color: '#41E8D7'}},
+        {value: 200, name: '小孩', itemStyle: {color: '#C05BDE'}},
+        {value: 350, name: '老人', itemStyle: {color: '#65D186'}},
+      ],
+      label: {show: false},
+      labelLine: {show: false}
+    }
+  ]
+});
+
+
+// 列
 const columnChartOption = ref({
   title: {
     text: '近一周访客超时楼栋分布',
@@ -116,12 +278,13 @@ const columnChartOption = ref({
   xAxis: {
     type: 'category',
     data: ['6-27', '6-28', '6-29', '6-30', '7-1', '7-2', '7-3'],
-    axisTick: { alignWithLabel: true },
+    axisTick: {alignWithLabel: false},
     axisLine: {
-      lineStyle: { type: 'dashed' }
+      lineStyle: {type: 'dashed'}
     },
     axisLabel: {
-      interval: 0 // 0 表示强制显示所有标签，适用于类目较少的场景
+      color: '#9dceff', // 修改Y轴标签颜色
+      fontSize: 6 // 缩小Y轴标签字体
     }
   },
   yAxis: {
@@ -144,20 +307,25 @@ const columnChartOption = ref({
     {
       name: '超时次数',
       type: 'bar',
-      data: [20, 50, 300, 350, 300, 280, 220],
+      data: [20, 50, 200, 300, 390, 330, 200],
       itemStyle: {
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          {offset: 0, color: '#33ccff'},
-          {offset: 0.5, color: '#0099ff'},
-          {offset: 1, color: '#0066cc'}
-        ])
+        color: (params: any) => {
+          // 判断 dataIndex 奇偶性
+          if (params.dataIndex % 2 === 0) {
+            return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {offset: 0, color: '#4C81DD'}, // 第一个颜色（偶数索引柱子）
+              {offset: 1, color: '#4C81DD'}
+            ]);
+          } else {
+            return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {offset: 0, color: '#3CEDE3'}, // 第二个颜色（奇数索引柱子）
+              {offset: 1, color: '#3CEDE3'}
+            ]);
+          }
+        }
       }
     }
   ],
-  visualMap: {
-    show: false,
-    min: 0
-  },
   tooltip: {
     trigger: 'axis',
     axisPointer: {type: 'shadow'}
@@ -171,7 +339,6 @@ const yAxisMax = Math.ceil(dataMax / 100) * 100; // 向上取整到最近的 100
 
 // 更新配置
 columnChartOption.value.yAxis.max = yAxisMax;
-columnChartOption.value.visualMap.max = yAxisMax;
 let arr = [
   {
     name: '业主人数',
@@ -464,36 +631,69 @@ const alarmList = [
     margin-top: .1rem;
     height: auto;
 
-    .right_2 {
-      width: 4.85rem;
-      height: 2.975rem;
+  }
 
-      .title {
+  .right_2 {
+    width: 4.85rem;
+    height: 2.975rem;
+
+    .title {
+      height: .3375rem;
+      width: 100%;
+      display: flex;
+      font-size: .225rem;
+      color: #6d9ff1;
+
+      .image {
+        width: .25rem;
         height: .3375rem;
-        width: 100%;
-        display: flex;
-        font-size: .225rem;
-        color: #6d9ff1;
-
-        .image {
-          width: .25rem;
-          height: .3375rem;
-          margin-right: .2625rem;
-        }
+        margin-right: .2625rem;
       }
+    }
 
-      .chart-container {
-        height: 2.975rem !important;
+    .chart-container {
+      height: 2.975rem;
+      width: 100%;
+
+      #data_content {
+        height: 100%;
         width: 100%;
-
-        #data_content {
-          height: 100%;
-          width: 100%;
-          padding: .075rem .425rem .3875rem .225rem !important;
-        }
+        padding: .075rem .425rem .3875rem .225rem;
       }
     }
   }
+
+  .huan {
+    width: 4.85rem;
+    height: 2.575rem;
+
+    .title {
+      height: .3375rem;
+      width: 100%;
+      display: flex;
+      font-size: .225rem;
+      color: #6d9ff1;
+
+      .image {
+        width: .25rem;
+        height: .3375rem;
+        margin-right: .2625rem;
+      }
+    }
+
+    .chart-container {
+      height: 2.975rem;
+      width: 100%;
+
+      #data_content {
+        height: 100%;
+        width: 100%;
+        padding: .075rem .425rem .3875rem .225rem;
+      }
+    }
+
+  }
+
 }
 
 .shadow {
