@@ -98,7 +98,7 @@
         <div class="right_2 shadow">
           <div class="title">
             <img src="@/assets/png/img/titleImg.png" alt="" class="image">
-            <div>系统能效统计</div>
+            <div>系统能效概况</div>
           </div>
           <div class="chart-container">
             <div id="data_content">
