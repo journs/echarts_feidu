@@ -2,7 +2,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
+  --scale-factor: 1;
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
@@ -18,4 +18,59 @@
   padding: 0;
   box-sizing: border-box;
   font-size: .2rem;
+}
+/* 左侧进入动画 */
+.slide-in-left-enter-active {
+  animation: slideInLeft 0.5s ease;
+}
+.slide-in-left-leave-active {
+  animation: slideOutLeft 0.5s ease;
+}
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+/* 右侧进入动画 */
+.slide-in-right-enter-active {
+  animation: slideInRight 0.5s ease;
+}
+.slide-in-right-leave-active {
+  animation: slideOutRight 0.5s ease;
+}
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }

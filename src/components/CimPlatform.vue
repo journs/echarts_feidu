@@ -1,126 +1,313 @@
 <template>
-  <div class="left pl slide-in-left">
-    <div class="all shadow">
-      <div class="title">
-        <img class="image" src="@/assets/png/img/titleImg.png" alt="">
-        <div>摄像头概述总览</div>
-      </div>
-      <div class="item">
-        <img src="@/assets/png/img/title.png" alt="" class="image">
-        <div class="text">
+  <div class="community-management-container">
+    <div class="left pl slide-in-left">
+      <div class="all shadow">
+        <div class="title">
+          <img class="image" src="@/assets/png/img/titleImg.png" alt="">
+          <div>安防概述</div>
+        </div>
+        <div class="item">
+          <img src="@/assets/png/img/title.png" alt="" class="image">
+          <div class="text">
           <span style="color: #5391fd;
     font-size: .175rem;
     line-height: .175rem;
     margin-bottom: .0625rem;">当前社区总人数</span>
-          <span style="    color: #9dceff;
+            <span style="    color: #9dceff;
     font-size: .275rem;
     line-height: .3rem;">12530</span>
+          </div>
         </div>
-        <div class="text_1">
-          <span
-              style="color: #6d9ff1;background-color: #383a56;font-size: .175rem !important;padding: 0 .0875rem;height: .2875rem;line-height: .2875rem;">黑名单</span>
-          <span style="color: #9dceff;font-size: .175rem !important;">25</span>
-        </div>
-      </div>
-      <div class="item_1">
-        <div class="item_title" v-for="item in arr">
-          <div class="text">{{ item.name }}</div>
-          <div style="color: rgb(157, 206, 243); font-size: 0.175rem;">{{ item.value }}</div>
+        <div class="item_1">
+          <div class="item_title" v-for="item in arr">
+            <div class="text">{{ item.name }}</div>
+            <div style="color: rgb(157, 206, 243); font-size: 0.175rem;">{{ item.value }}</div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="list shadow">
-      <div class="title">
-        <img src="@/assets/png/img/titleImg.png" alt="" class="image">
-        <div>报警信息列表</div>
+      <div class="video shadow">
+        <div class="title">
+          <img class="image" src="@/assets/png/img/titleImg.png" alt="">
+          <div>摄像头视频监控</div>
+        </div>
+        <div class="content">
+          <div class="move" v-for="() in 3">
+            <img class="image" src="@/assets/png/img/move.jpg" alt="">
+            <div>星关广场云台</div>
+          </div>
+        </div>
       </div>
-      <div class="content">
-        <div v-for="(item, index) in alarmList" :key="index" class="item">
-          <div class="left"></div>
-          <div class="right">
-            <div class="ct_1">
-              <span>{{ item.location }}</span>
-              <span
-                  :class="{
+      <div class="list shadow">
+        <div class="title">
+          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+          <div>报警信息列表</div>
+        </div>
+        <div class="content">
+          <div v-for="(item, index) in alarmList" :key="index" class="item">
+            <div class="left"></div>
+            <div class="right">
+              <div class="ct_1">
+                <span>{{ item.location }}</span>
+                <span
+                    :class="{
             'back_2': item.status === '已消警',
             'back_1': item.status === '处理中'
           }"
-                  class="span"
-              >{{ item.status }}</span>
+                    class="span"
+                >{{ item.status }}</span>
+              </div>
+              <div class="ct_2">
+                {{ item.time }}
+              </div>
             </div>
-            <div class="ct_2">
-              {{ item.time }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right pr slide-in-right">
+      <div class="right_1 shadow">
+        <div class="title">
+          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+          <div>舒适度数据统计</div>
+        </div>
+        <div class="chart-container">
+          <div id="data_content">
+            <vue-echarts :option="cameraChartOption" auto-resize class="column-chart"/>
+          </div>
+          <div class="data_right">
+            <div class="item_2">室内空气：32%</div>
+            <div data-v-d48e3eef="" class="item_3">32%</div>
+            <div data-v-d48e3eef="" class="item_4">室内温度：53.685%</div>
+            <div data-v-d48e3eef="" class="item_5">53.685%</div>
+          </div>
+        </div>
+      </div>
+      <div class="right_2_sum shadow">
+        <div class="data_2">
+          <div class="title">
+            <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+            <div>能源数据概况</div>
+          </div>
+          <div class="content">
+            <div class="item" v-for="item in itemArr">
+              <div class="energy">{{ item.title }}</div>
+              <div class="text">{{ item.value }}</div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="right pr slide-in-right">
-    <div class="right_1 shadow">
-      <div class="title">
-        <img src="@/assets/png/img/titleImg.png" alt="" class="image">
-        <div>黑名单数据</div>
-      </div>
-      <div class="content">
-        <div class="item">
-          <img class="av" src="@/assets/png/img/user.png" alt="">
-        </div>
-        <div class="item">
-          <div class="text">近一个月出现黑名单次数</div>
-        </div>
-        <div class="item" style="    font-size: .45rem !important;
-    color: #25c7ff;height: 1rem;">
-          <div style="    font-size: 0.5rem !important;">754</div>
-        </div>
-      </div>
-    </div>
-    <div class="right_2_sum shadow">
-      <div class="right_2">
-        <div class="title">
-          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
-          <div>超时访客数据</div>
-        </div>
-        <!-- 添加ECharts图表容器 -->
-        <div class="chart-container">
-          <div id="data_content">
-            <vue-echarts :option="columnChartOption" auto-resize class="column-chart"/>
+        <div class="right_2 shadow">
+          <div class="title">
+            <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+            <div>系统能效统计</div>
+          </div>
+          <div class="chart-container">
+            <div id="data_content">
+              <vue-echarts :option="lineChartOption" auto-resize class="column-chart"/>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="huan">
-        <div class="title">
-          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
-          <div>超时访客数据</div>
-        </div>
-        <!-- 添加ECharts图表容器 -->
-        <div class="chart-container">
-          <div id="data_content">
-            <vue-echarts :option="pieChartOption" auto-resize class="column-chart"/>
+        <div class="right_2 shadow">
+          <div class="title">
+            <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+            <div>系统能效统计</div>
           </div>
+          <el-carousel
+              @change="handlerChange"
+              height="150px" :autoplay="false" trigger="click">
+            <el-carousel-item v-for="item in 4" :key="item">
+              <div class="sum">
+                <div class="chart-container">
+                  <div id="data_content">
+                    <vue-echarts :option="barChartOption" ref="echartsRef" id="across_bar" auto-resize
+                                 class="column-chart"/>
+                  </div>
+                </div>
+                <!-- 设备状态信息 -->
+                <div class="device-status">
+                  <div class="status-item">
+                    <div>1#冷战</div>
+                    <div style="font-size: 0.15rem;">(1#主机)</div>
+                  </div>
+                  <div class="status-group">
+                    <span class="status-info">开启状态</span>
+                    <span class="status-tag">启动</span>
+                  </div>
+                  <div class="status-group">
+                    <span class="status-info">运行状态</span>
+                    <span class="status-tag">启动</span>
+                  </div>
+                </div>
+              </div>
+            </el-carousel-item>
+          </el-carousel>
         </div>
       </div>
-      <div class="right_2">
-        <div class="title">
-          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
-          <div>报警数据</div>
-        </div>
-        <div class="chart-container">
-          <div id="data_content">
-            <vue-echarts :option="lineChartOption" auto-resize class="column-chart"/>
-          </div>
-        </div>
-      </div>
-    </div>
 
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import * as echarts from 'echarts';
 import yzImage from '@/assets/png/img/yz.png';
 
+const echartsRef = ref(null);
+let currentIndex = ref(0);
+let handlerChange = (n,o)=>{
+  currentIndex.value = n;
+  echartsRef.value[currentIndex.value].resize()
+}
+onMounted(() => {
+  setTimeout(() => {
+    // 绘制图表
+    console.log(echartsRef);
+    echartsRef.value[currentIndex.value].resize()
+  }, 500)
+});
+
+const barChartOption = ref({
+  legend: {
+    data: ['出水温度', '进水温度'],
+    textStyle: {color: '#9dceff'},
+    itemGap: 20,
+    top: '10%',
+    right: '10%'
+  },
+  grid: {
+    top: '25%',
+    bottom: '20%',
+    left: '20%',
+  },
+  xAxis: {
+    type: 'value',
+    axisLine: {lineStyle: {color: '#4c5c7a'}},
+    axisTick: {show: false},
+    axisLabel: {
+      color: '#9dceff',
+      margin: 15
+    },
+    min: -400,
+    max: 300,
+    splitLine: {
+      lineStyle: {
+        type: 'dashed',
+        color: '#4c5c7a'
+      }
+    },
+    splitNumber: 7 // 新增：强制设置刻度分割数，让刻度均匀分布
+  },
+  yAxis: {
+    type: 'category',
+    data: ['蒸发器', '冷凝器'],
+    axisLine: {lineStyle: {color: '#4c5c7a'}},
+    axisTick: {show: false},
+    axisLabel: {
+      color: '#9dceff',
+      margin: 10,
+      interval: 0
+    }
+  },
+  series: [
+    {
+      name: '出水温度',
+      type: 'bar',
+      data: [-302, -120],
+      itemStyle: {color: '#A207D4'},
+      label: {
+        show: true,
+        position: 'inside',
+        color: '#fff',
+        formatter: '{c}'
+      },
+      barWidth: '60%', // 微调柱宽
+    },
+    {
+      name: '进水温度',
+      type: 'bar',
+      data: [300, 120],
+      itemStyle: {color: '#0CA9D9'},
+      label: {
+        show: true,
+        position: 'inside',
+        color: '#fff',
+        formatter: '{c}'
+      },
+      barWidth: '60%',
+      barGap: '-100%' // 缩小柱间距离
+    }
+  ]
+});
+
+let itemArr = [
+  {
+    title: "本月总能耗 (单位：kw.h)",
+    value: 11787
+  },
+  {
+    title: "本年总能耗 (单位:kw.h)",
+    value: 210688
+  },
+  {
+    title: "本日总负荷 (单位:kw.h)",
+    value: 73779
+  },
+  {
+    title: "本年平均能耗 (单位:kw.h)",
+    value: 10127
+  },
+  {
+    title: "本日总电费 (单位:元)",
+    value: 5646
+  },
+  {
+    title: "本年总电费 (单位:元)",
+    value: 203231
+  }]
+//摄像头覆盖占比
+const cameraChartOption = ref({
+  series: [
+    {
+      name: '覆盖区域',
+      type: 'pie',
+      left: -10,
+      top: 10,
+      radius: ['65%', '85%'], // 调整环形大小，内半径50%，外半径70%
+      startAngle: 40, // 起始角度（从顶部开始）
+      endAngle: 140, // 结束角度（80%对应的角度：360*0.8=288）
+      label: {
+        show: true,
+        position: 'center',
+        formatter: function (params: any) {
+          return `{title|${params.name}}\n{percent|${params.value}%}`;
+        },
+        rich: {
+          title: {
+            fontSize: 10,
+            fontWeight: 'bold',
+            color: '#3C6279'
+          },
+          percent: {
+            fontSize: 12,
+            color: '#28DECD',
+            fontWeight: 'bold'
+          }
+        }
+      },
+      data: [
+        {value: 65, name: '室内温度'}
+      ],
+      itemStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          {offset: 0, color: '#2C5879'},
+          {offset: 1, color: '#2AE3D0'}
+        ])
+      }
+    }
+  ],
+});
+
+// 线
 const lineChartOption = ref({
   grid: {
     top: '20%', // 增加顶部间距，给标题留空间
@@ -129,13 +316,16 @@ const lineChartOption = ref({
     right: '5%'
   },
   title: {
-    text: '近一月报警次数 单位：{whiteText|次数/天}',
+    text: '位数/时                  {whiteText|单位:千/kw.h}',
     left: 'center',
     textStyle: {
       color: '#3d79da',
-      fontSize: 12,
+      fontSize: 10,
       rich: {
-        whiteText: {color: '#fff'}
+        whiteText: {
+          fontSize: 10,
+          color: '#fff'
+        }
       }
     }
   },
@@ -144,8 +334,11 @@ const lineChartOption = ref({
     boundaryGap: false,
     data: ['6-27', '6-28', '6-29', '6-30', '7-1', '7-2', '7-3', '7-4', '7-5'],
     axisLine: {lineStyle: {color: '#4c5c7a'}},
-    axisTick: {show: false},
-    axisLabel: {color: '#9dceff'}
+    axisTick: {show: true},
+    axisLabel: {
+      fontSize: 10,
+      color: '#4c5c7a', interval: 0 // 强制显示所有标签
+    }
   },
   yAxis: {
     type: 'value',
@@ -158,7 +351,7 @@ const lineChartOption = ref({
     axisLabel: {
       color: '#9dceff',
       margin: 5, // 增加标签与轴线的间距，避免遮挡
-      fontSize: 6 // 缩小Y轴标签字体
+      fontSize: 10 // 缩小Y轴标签字体
     }
   },
   series: [
@@ -186,8 +379,12 @@ const lineChartOption = ref({
         )
       },
       symbol: 'circle',
-      symbolSize: 8,
-      itemStyle: {color: '#FF6B81'}
+      symbolSize: 4,
+      itemStyle: {
+        color: 'white', // 填充透明，实现镂空
+        borderColor: '#FF6B81', // 边框颜色
+        borderWidth: 1.5 // 边框粗细，可根据需求调整
+      }
     }
   ]
 });
@@ -342,13 +539,13 @@ columnChartOption.value.yAxis.max = yAxisMax;
 let arr = [
   {
     name: '业主人数',
-    value: '12530'
+    value: '2318'
   }, {
     name: '访问人数',
-    value: '12530'
+    value: '880'
   }, {
     name: '外来人数',
-    value: '12530'
+    value: '174'
   },
 ]
 const alarmList = [
@@ -400,6 +597,12 @@ const alarmList = [
 </script>
 
 <style scoped>
+.community-management-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .left {
   width: 4.85rem;
   padding-left: .125rem;
@@ -434,7 +637,7 @@ const alarmList = [
       .image {
         width: .7125rem;
         height: .7125rem;
-        margin-right: .9rem !important;
+        margin-right: .19rem !important;
       }
 
       .text {
@@ -486,6 +689,45 @@ const alarmList = [
       }
 
 
+    }
+  }
+
+  .video {
+    width: 100%;
+    height: 1.7625rem;
+    padding-top: .1375rem;
+    margin-bottom: .15rem;
+
+    .title {
+      height: .3375rem;
+      width: 100%;
+      display: flex;
+      font-size: .225rem;
+      color: #6d9ff1;
+
+      .image {
+        width: .25rem;
+        height: .3375rem;
+        margin-right: .2625rem;
+      }
+    }
+
+
+    .content {
+      margin-top: .0625rem;
+      width: 100%;
+      display: flex;
+      height: 1.85rem;
+      padding-left: .25rem;
+
+      .move {
+        color: #fff;
+        margin-right: .2rem;
+        width: 1.275rem;
+        height: 1.1625rem;
+        display: flex;
+        flex-direction: column;
+      }
     }
   }
 
@@ -581,11 +823,52 @@ const alarmList = [
 
 .right {
   width: 4.85rem;
+  padding-top: .125rem;
+  padding-right: .125rem;
 
   .right_1 {
-    width: 4.85rem;
-    padding-left: .1rem;
-    padding-top: .125rem;
+    width: 4.75rem;
+
+    .data_right {
+      margin-top: 0.3rem;
+
+      .item_1 {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .item_2 {
+        font-size: .15rem !important;
+        margin-bottom: .1rem;
+      }
+
+      .item_3 {
+        font-size: .15rem !important;
+        margin-bottom: .125rem;
+        width: .7rem;
+        text-align: right;
+        background-color: #0e8f87;
+        height: .1875rem;
+        padding-right: .05rem;
+        line-height: .1875rem;
+      }
+
+      .item_4 {
+        font-size: .15rem !important;
+        margin-bottom: .125rem;
+      }
+
+      .item_5 {
+        font-size: .15rem !important;
+        height: .1875rem;
+        width: 1.1875rem !important;
+        background-color: #0e8f87;
+        padding-right: .05rem;
+        text-align: right;
+        line-height: .1875rem;
+      }
+    }
 
     .title {
       height: .3375rem;
@@ -601,25 +884,15 @@ const alarmList = [
       }
     }
 
-    .content {
+    .chart-container {
+      height: 1.975rem;
+      width: 100%;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: .25rem .425rem .1rem .225rem !important;
 
-      .av {
-        width: .675rem;
-        height: .675rem;
-      }
-
-      .text {
-        text-align: center;
-        line-height: .4125rem;
-        height: .4125rem;
-        width: 2.2rem;
-        background-color: #222431;
-        font-size: .175rem !important;
-        color: #fff;
+      #data_content {
+        height: 100%;
+        width: 50%;
+        padding: .075rem 0 .3875rem .225rem;
       }
     }
   }
@@ -631,11 +904,57 @@ const alarmList = [
     margin-top: .1rem;
     height: auto;
 
+    .data_2 {
+      .title {
+        height: .3375rem;
+        width: 100%;
+        display: flex;
+        font-size: .225rem;
+        color: #6d9ff1;
+
+        .image {
+          width: .25rem;
+          height: .3375rem;
+          margin-right: .2625rem;
+        }
+      }
+
+      .content {
+        display: flex;
+        padding-top: .0625rem;
+        flex-wrap: wrap;
+        padding-left: .25rem;
+
+        .item {
+          color: #fff;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          flex-basis: 40%;
+          height: .85rem;
+          margin-left: .1rem;
+
+          .energy {
+            font-size: .175rem !important;
+            width: 2rem;
+            height: .375rem;
+            text-align: center;
+            line-height: .375rem;
+          }
+
+          .text {
+            height: .2875rem;
+            line-height: .2875rem;
+            font-size: .2875rem;
+            color: #24c0f7;
+          }
+        }
+      }
+    }
   }
 
   .right_2 {
     width: 4.85rem;
-    height: 2.975rem;
 
     .title {
       height: .3375rem;
@@ -652,48 +971,74 @@ const alarmList = [
     }
 
     .chart-container {
-      height: 2.975rem;
+      height: 2.275rem;
       width: 100%;
 
       #data_content {
         height: 100%;
         width: 100%;
-        padding: .075rem .425rem .3875rem .225rem;
+        padding: .075rem .425rem 0 .225rem;
       }
     }
   }
 
-  .huan {
-    width: 4.85rem;
-    height: 2.575rem;
+  .sum {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: .0625rem .425rem .1rem .25rem !important;
 
-    .title {
-      height: .3375rem;
-      width: 100%;
+    #data_content {
+      padding: 0 !important;
+
+      #across_bar {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    .device-status {
+      width: auto;
+      color: #fff;
+      text-align: center;
       display: flex;
-      font-size: .225rem;
-      color: #6d9ff1;
-
-      .image {
-        width: .25rem;
-        height: .3375rem;
-        margin-right: .2625rem;
-      }
+      align-items: center;
+      flex-direction: column;
     }
 
-    .chart-container {
-      height: 2.975rem;
-      width: 100%;
-
-      #data_content {
-        height: 100%;
-        width: 100%;
-        padding: .075rem .425rem .3875rem .225rem;
-      }
+    .status-item {
+      width: .65rem;
+      height: .5rem;
+      background-color: #202856;
+      margin-bottom: .1125rem;
     }
 
+    .status-group {
+      height: .4375rem;
+      margin-top: .1125rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .status-info {
+      font-size: .15rem !important;
+      color: #fff;
+      height: .15rem;
+      margin-bottom: .0625rem;
+      line-height: .15rem;
+    }
+
+    .status-tag {
+      width: .55rem;
+      background-color: #00d6b8;
+      font-size: .15rem !important;
+      color: #fff;
+      height: .25rem;
+      margin-bottom: .1rem;
+      line-height: .25rem;
+    }
   }
-
 }
 
 .shadow {
@@ -706,5 +1051,17 @@ const alarmList = [
 
 .back_2 {
   background-color: #3f51b5 !important;
+}
+
+::v-deep(.el-carousel__button) {
+  border-radius: .125rem;
+  height: .125rem;
+  width: .125rem;
+  background-color: #409eff;
+}
+
+::v-deep( .el-carousel,.el-carousel-item) {
+  height: 3rem;
+  width: 4.85rem;
 }
 </style>

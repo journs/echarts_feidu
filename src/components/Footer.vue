@@ -1,16 +1,17 @@
 <template>
-    <div class="bottom">
-      <div class="bottom-center">
-        <!-- 通过 :class 动态绑定类名，:class="{ 'fontColor': index === butIndex }" 实现根据点击状态添加类名 -->
-        <button class="item" v-for="(but, index) in buttonList" :key="index" @click="handleButtonClick(but.path, index)" :class="{ 'fontColor': index === butIndex }">
-          {{but.name}}
-        </button>
-      </div>
+  <div class="bottom">
+    <div class="bottom-center">
+      <!-- 通过 :class 动态绑定类名，:class="{ 'fontColor': index === butIndex }" 实现根据点击状态添加类名 -->
+      <button class="item" v-for="(but, index) in buttonList" :key="index" @click="handleButtonClick(but.path, index)"
+              :class="{ 'fontColor': index === butIndex }">
+        {{ but.name }}
+      </button>
     </div>
+  </div>
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {useRouter} from "vue-router";
 
 // 初始化当前选中按钮的索引为 0
@@ -31,6 +32,14 @@ const handleButtonClick = (path, index) => {
   // 进行路由跳转
   router.push(path);
 };
+
+watch(() => router.currentRoute.value.path, (newPath) => {
+  buttonList.forEach((button, index) => {
+    if (button.path === newPath) {
+      butIndex.value = index;
+    }
+  });
+}, {immediate: true});
 </script>
 
 <style scoped lang="less">
@@ -39,13 +48,13 @@ const handleButtonClick = (path, index) => {
 }
 
 .bottom {
-  width: 24rem;
   position: absolute;
   bottom: .35rem;
   height: .6375rem;
   display: flex;
   justify-content: center;
-
+  left: 50%;
+  transform: translateX(-50%);
   .bottom-center {
     width: 9.1375rem;
     display: flex;

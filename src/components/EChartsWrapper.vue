@@ -1,118 +1,120 @@
 <template>
-  <div class="left pl slide-in-left">
-    <div class="all shadow">
-      <div class="title">
-        <img class="image" src="@/assets/png/img/titleImg.png" alt="">
-        <div>摄像头概述总览</div>
-      </div>
-      <div class="item">
-        <img src="@/assets/png/img/title.png" alt="" class="image">
-        <div class="text">
+  <div class="community-management-container">
+    <div class="left pl slide-in-left">
+      <div class="all shadow">
+        <div class="title">
+          <img class="image" src="@/assets/png/img/titleImg.png" alt="">
+          <div>摄像头概述总览</div>
+        </div>
+        <div class="item">
+          <img src="@/assets/png/img/title.png" alt="" class="image">
+          <div class="text">
           <span style="color: #5391fd;
     font-size: .175rem;
     line-height: .175rem;
     margin-bottom: .0625rem;">当前社区总人数</span>
-          <span style="    color: #9dceff;
+            <span style="    color: #9dceff;
     font-size: .275rem;
     line-height: .3rem;">12530</span>
-        </div>
-        <div class="text_1">
+          </div>
+          <div class="text_1">
           <span
               style="color: #6d9ff1;background-color: #383a56;font-size: .175rem !important;padding: 0 .0875rem;height: .2875rem;line-height: .2875rem;">黑名单</span>
-          <span style="color: #9dceff;font-size: .175rem !important;">25</span>
+            <span style="color: #9dceff;font-size: .175rem !important;">25</span>
+          </div>
+        </div>
+        <div class="item_1">
+          <div class="item_title" v-for="item in arr">
+            <div class="text">{{ item.name }}</div>
+            <div style="color: rgb(157, 206, 243); font-size: 0.175rem;">{{ item.value }}</div>
+          </div>
         </div>
       </div>
-      <div class="item_1">
-        <div class="item_title" v-for="item in arr">
-          <div class="text">{{ item.name }}</div>
-          <div style="color: rgb(157, 206, 243); font-size: 0.175rem;">{{ item.value }}</div>
+      <div class="list shadow">
+        <div class="title">
+          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+          <div>报警信息列表</div>
         </div>
-      </div>
-    </div>
-    <div class="list shadow">
-      <div class="title">
-        <img src="@/assets/png/img/titleImg.png" alt="" class="image">
-        <div>报警信息列表</div>
-      </div>
-      <div class="content">
-        <div v-for="(item, index) in alarmList" :key="index" class="item">
-          <div class="left"></div>
-          <div class="right">
-            <div class="ct_1">
-              <span>{{ item.location }}</span>
-              <span
-                  :class="{
+        <div class="content">
+          <div v-for="(item, index) in alarmList" :key="index" class="item">
+            <div class="left"></div>
+            <div class="right">
+              <div class="ct_1">
+                <span>{{ item.location }}</span>
+                <span
+                    :class="{
             'back_2': item.status === '已消警',
             'back_1': item.status === '处理中'
           }"
-                  class="span"
-              >{{ item.status }}</span>
-            </div>
-            <div class="ct_2">
-              {{ item.time }}
+                    class="span"
+                >{{ item.status }}</span>
+              </div>
+              <div class="ct_2">
+                {{ item.time }}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="right pr slide-in-right">
-    <div class="right_1 shadow">
-      <div class="title">
-        <img src="@/assets/png/img/titleImg.png" alt="" class="image">
-        <div>黑名单数据</div>
-      </div>
-      <div class="content">
-        <div class="item">
-          <img class="av" src="@/assets/png/img/user.png" alt="">
+    <div class="right pr slide-in-right">
+      <div class="right_1 shadow">
+        <div class="title">
+          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+          <div>黑名单数据</div>
         </div>
-        <div class="item">
-          <div class="text">近一个月出现黑名单次数</div>
-        </div>
-        <div class="item" style="    font-size: .45rem !important;
+        <div class="content">
+          <div class="item">
+            <img class="av" src="@/assets/png/img/user.png" alt="">
+          </div>
+          <div class="item">
+            <div class="text">近一个月出现黑名单次数</div>
+          </div>
+          <div class="item" style="    font-size: .45rem !important;
     color: #25c7ff;height: 1rem;">
-          <div style="    font-size: 0.5rem !important;">754</div>
-        </div>
-      </div>
-    </div>
-    <div class="right_2_sum shadow">
-      <div class="right_2">
-        <div class="title">
-          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
-          <div>超时访客数据</div>
-        </div>
-        <!-- 添加ECharts图表容器 -->
-        <div class="chart-container">
-          <div id="data_content">
-            <vue-echarts :option="columnChartOption" auto-resize class="column-chart"/>
+            <div style="    font-size: 0.5rem !important;">754</div>
           </div>
         </div>
       </div>
-      <div class="huan">
-        <div class="title">
-          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
-          <div>超时访客数据</div>
+      <div class="right_2_sum shadow">
+        <div class="right_2">
+          <div class="title">
+            <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+            <div>超时访客数据</div>
+          </div>
+          <!-- 添加ECharts图表容器 -->
+          <div class="chart-container">
+            <div id="data_content">
+              <vue-echarts :option="columnChartOption" auto-resize class="column-chart"/>
+            </div>
+          </div>
         </div>
-        <!-- 添加ECharts图表容器 -->
-        <div class="chart-container">
-          <div id="data_content">
-            <vue-echarts :option="pieChartOption" auto-resize class="column-chart"/>
+        <div class="huan">
+          <div class="title">
+            <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+            <div>超时访客数据</div>
+          </div>
+          <!-- 添加ECharts图表容器 -->
+          <div class="chart-container">
+            <div id="data_content">
+              <vue-echarts :option="pieChartOption" auto-resize class="column-chart"/>
+            </div>
+          </div>
+        </div>
+        <div class="right_2">
+          <div class="title">
+            <img src="@/assets/png/img/titleImg.png" alt="" class="image">
+            <div>报警数据</div>
+          </div>
+          <div class="chart-container">
+            <div id="data_content">
+              <vue-echarts :option="lineChartOption" auto-resize class="column-chart"/>
+            </div>
           </div>
         </div>
       </div>
-      <div class="right_2">
-        <div class="title">
-          <img src="@/assets/png/img/titleImg.png" alt="" class="image">
-          <div>报警数据</div>
-        </div>
-        <div class="chart-container">
-          <div id="data_content">
-            <vue-echarts :option="lineChartOption" auto-resize class="column-chart"/>
-          </div>
-        </div>
-      </div>
-    </div>
 
+    </div>
   </div>
 </template>
 
@@ -400,6 +402,11 @@ const alarmList = [
 </script>
 
 <style scoped>
+.community-management-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 .left {
   width: 4.85rem;
   padding-left: .125rem;

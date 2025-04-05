@@ -1,4 +1,5 @@
 <template>
+  <div class="community-management-container">
   <div class="left pl slide-in-left">
     <div class="all shadow">
       <div class="title">
@@ -113,6 +114,7 @@
       </div>
     </div>
 
+  </div>
   </div>
 </template>
 
@@ -400,6 +402,11 @@ const alarmList = [
 </script>
 
 <style scoped>
+.community-management-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 .left {
   width: 4.85rem;
   padding-left: .125rem;
