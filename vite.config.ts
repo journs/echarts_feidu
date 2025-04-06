@@ -34,6 +34,7 @@ export default defineConfig({
             }
         }
     },
+    base: '/echarts_feidu/',
     build: {
         outDir: 'docs'
     }
